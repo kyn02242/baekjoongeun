@@ -5,15 +5,13 @@ using namespace std;
 
 int solution(vector<int> order) {
     int answer = 0;
-    stack<int> s;
+    stack<int> st;
     for(int i=1;i<=order.size();i++){
-        s.push(i);
-        while(!s.empty()&&s.top()==order[answer]){
-            s.pop();
+        st.push(i);
+        while(!st.empty()&&st.top()==order[answer]){
+            st.pop();
             answer++;
         }
     }
-    
-    
     return answer;
 }
