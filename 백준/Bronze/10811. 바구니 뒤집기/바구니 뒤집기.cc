@@ -19,24 +19,17 @@ int main()
     }
 
     int s, e;
+
     for (int i = 0; i < n; i++)
     {
         cin >> s >> e;
         s -= 1;
-        e -= 1;
-        vector<int> v1(e - s + 1);
-        for (int j = 0; j < e - s + 1; j++)
-        {
-            v1[j] = v[e - j];
-        }
-        for (int j = 0; j < e - s + 1; j++)
-        {
-            v[s + j] = v1[j];
-        }
+        reverse(v.begin() + s, v.begin() + e);
     }
 
-    for(int i = 0; i < m; i++){
-        cout << v[i] << ' ';
+    for (int i : v)
+    {
+        cout << i << ' ';
     }
     return 0;
 }
