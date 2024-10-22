@@ -1,34 +1,24 @@
 #include <string>
 #include <vector>
-#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
-bool solution(vector<string> phone_book)
-{
+bool solution(vector<string> phone_book) {
     bool answer = true;
-    sort(phone_book.begin(), phone_book.end());
 
-    int n = phone_book.size();
-    for (int i = 0; i < n - 1; i++)
-    {
-        int j = i + 1;
-        int cnt = 0;
-        for (int k = 0; k < phone_book[i].length(); k++)
-        {
-            if (phone_book[i][k] == phone_book[j][k])
-            {
-                cnt++;
-            }
-            else
-            {
-                continue;
-            }
-        }
-        if (cnt == phone_book[i].length())
-        {
-            return false;
+    unordered_map<string, int> hash_map;
+    for(int i = 0; i < phone_book.size(); i++)
+        hash_map[phone_book[i]] = 1;
+
+    for(int i = 0; i < phone_book.size(); i++) {
+        string phone_number = "";
+        for(int j = 0; j < phone_book[i].size(); j++) {
+            phone_number += phone_book[i][j];
+            if(hash_map[phone_number] && phone_number != phone_book[i])
+                answer = false;
         }
     }
+
     return answer;
 }
