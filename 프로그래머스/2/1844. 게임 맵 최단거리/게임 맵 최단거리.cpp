@@ -1,44 +1,51 @@
-#include<vector>
-#include<queue>
-#include<iostream>
-#include<map>
+#include <vector>
+#include <queue>
+#include <iostream>
+#include <map>
 
 using namespace std;
 
+queue<pair<int, int>> q;
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+
 int n;
 int m;
-int dx[4] = {1,0,-1,0};
-int dy[4] = {0,1,0,-1};
-queue<pair<int,int>> q;
-int ans = 0;
 
-int BFS(vector<vector<int>> &maps){
-    q.push({0,0});
-    while(!q.empty()){
-        int x = q.front().first;
-        int y = q.front().second;
+int BFS(vector<vector<int>> &maps)
+{
+    q.push({0, 0});
+    while (!q.empty())
+    {
+        int x = q.front().second;
+        int y = q.front().first;
         q.pop();
-        for(int i=0;i<4;i++){
-            int ddx = x+dx[i];
-            int ddy = y+dy[i];
-            if(ddx == n-1&&ddy == m-1){
-                maps[ddx][ddy]+=maps[x][y];
-                return maps[ddx][ddy];
+
+        for (int i = 0; i < 4; i++)
+        {
+            int ddx = x + dx[i];
+            int ddy = y + dy[i];
+
+            if (ddx == m - 1 && ddy == n - 1)
+            { // 도착 지점
+                maps[ddy][ddx] = maps[y][x] + 1;
+                return maps[ddy][ddx];
             }
-            if(ddx>=0&&ddx<n&&ddy>=0&&ddy<m&&maps[ddx][ddy]==1){
-                q.push({ddx,ddy});
-                maps[ddx][ddy]+=maps[x][y];
+            if (ddx >= 0 && ddx < m && ddy >= 0 && ddy < n && maps[ddy][ddx] == 1)
+            {
+                q.push({ddy, ddx});
+                maps[ddy][ddx] = maps[y][x] + 1;
             }
         }
     }
     return -1;
 }
 
-int solution(vector<vector<int> > maps)
+int solution(vector<vector<int>> maps)
 {
     int answer = 0;
-    n = maps.size();
-    m = maps[0].size();
+    n = maps.size();    // 세로
+    m = maps[0].size(); // 가로
     answer = BFS(maps);
     return answer;
 }
