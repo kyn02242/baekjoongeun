@@ -1,97 +1,72 @@
-#include <iostream>
 #include <string>
 #include <vector>
-#include <cmath>
+#include <iostream>
 #include <algorithm>
 #include <queue>
-#include <stdio.h>
-#include <memory.h>
+#include <cmath>
+#include <set>
+#include <map>
+#include <unordered_set>
+#include <unordered_map>
+#include <stack>
+#include <deque>
+#include <numeric>
+#define endl '\n'
+#define MAX INT32_MAX
 
 using namespace std;
 
-int n, m;
-vector<int> v[101];
-int visited[101] = {0};
+int n;
+vector<vector<int>> v;
 
-int BFS(int start, int end)
-{
+int bfs(int start) {
+    vector<int> dist_arr(n + 1, 0);
+    vector<bool> visit(n + 1, 0);
     queue<pair<int, int>> q;
-    q.push(make_pair(start, 0)); // start to q.front.first distance
-    visited[start] = 1;
 
-    while (!q.empty())
-    {
-        int tmp_start = q.front().first;
-        int distance = q.front().second;
+    q.push(make_pair(start, 0));
+    visit[start] = true;
+
+    while(!q.empty()) {
+        int before = q.front().first;
+        int beforeDistance = q.front().second;
         q.pop();
-
-        // cout<<start<<",,,"<<end<<endl;
-        // cout<<start<<','<<end<<','<<distance<<endl<<endl;
-        if (tmp_start == end)
-        {
-            //cout << start << ',' << end << ',' << distance << endl;
-            return distance;
-        }
-
-        for (int i = 0; i < v[tmp_start].size(); i++)
-        {
-            // cout<<tmp_start<<",,,"<<distance<<endl;
-            if (v[tmp_start][i] != 0)
-            {
-                // cout<<tmp_start<<",,"<<distance<<endl;
-                if (visited[v[tmp_start][i]] == 0)
-                {
-                    // cout<<start<<",,"<<end<<endl;
-                    // cout<<tmp_start<<','<<distance<<endl;
-                    // cout<<endl;
-                    q.push(make_pair(v[tmp_start][i], distance + 1));
-                    visited[v[tmp_start][i]] = 1;
-                }
+        
+        for(auto i : v[before]) {
+            if (!visit[i]) {
+                q.push({i, beforeDistance + 1});
+                visit[i] = true;
+                dist_arr[i] = beforeDistance + 1;
             }
         }
     }
-    return 0;
+    return accumulate(dist_arr.begin() + 1, dist_arr.end(), 0);
 }
 
-int main()
-{
+int main () {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    
+    int m, h1, h2;
     cin >> n >> m;
-    int a, b;
-    int min = 10000000;
-    int ans = 0;
 
-    for (int i = 0; i < m; i++)
-    {
-        cin >> a >> b;
-        v[a].push_back(b);
-        v[b].push_back(a);
-    }
-    // for(int i=0;i<n;i++){
-    //     for(int j=0;j<n;j++){
-    //         cout<<v[i][j]<<" ";
-    //     }
-    //     cout<<endl;
-    // }
-    // cout<<endl;
+    v.resize(n + 1);
 
-    for (int i = 1; i <= n; i++)
-    {
-        int sum = 0;
-        for (int j = 1; j <= n; j++)
-        {
-            memset(visited, 0, 101);
-            if (i == j)
-                continue;
-            sum += BFS(i, j);
-        }
-        if (min > sum)
-        {
-            min = sum;
-            ans = i;
-        }
+    for(int i = 0; i < m; i++) {
+        cin >> h1 >> h2;
+        v[h1].push_back(h2);
+        v[h2].push_back(h1);
     }
 
-    cout << ans;
-
-    return 0;
+    int answer = 0;
+    int maxNum = MAX;
+    int tmp;
+    for(int i = 1; i <= n; i++) {
+        tmp = bfs(i);
+        if (maxNum > tmp) {
+            maxNum = tmp;
+            answer = i;
+        }
+    }
+    cout << answer;
 }
