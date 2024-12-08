@@ -94,23 +94,16 @@ bool isAnswer(int N, vector<vector<int>> v)
         {
             for (int k = 0; k < m; k++)
             {
-                // cout << i << " " << j << " " << k << endl;
-                // cout <<"v[j][k] + '0' : " <<  v[j][k] + '0' <<" "<< str[i]<<endl;
                 if (v[j][k] + '0' == str[i])
                 {
-                    // cout << j << " " << k << endl;
                     tmpV[i].push_back(make_pair(j, k));
-                    // cout << "push_back" << endl;
                 }
             }
         }
     }
 
-    // cout << "FIN" << endl;
-
     // (i,j)가 등차수열인것 찾기
     // DFS를 끝까지 통과한 것 유무 확인(?)
-
     for (int i = 0; i < tmpV[0].size(); i++)
     {
         for (int j = 0; j < tmpV[1].size(); j++)
@@ -139,7 +132,6 @@ int main()
 
     char tmp;
 
-    // cout << n << m << endl;
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
@@ -151,8 +143,6 @@ int main()
     }
 
     findPow();
-
-    // cout << PowList.size() << endl;
 
     for (auto i = PowList.rbegin(); i != PowList.rend(); i++)
     {
